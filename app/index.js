@@ -35,7 +35,7 @@ export default function Home() {
               data={data.results}
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
-                <View>
+                <View style={styles.boxContainer}>
                   <Link
                     style={styles.pokemon}
                     href={{
@@ -73,11 +73,31 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flexDirection: "column",
+    columnGap: 1000,
   },
-  pokemon: {
-    backgroundColor: "grey",
+  boxContainer: {
+    // backgroundColor: "grey",
+    shadowColor: "#171717",
+    shadowOffset: { width: -2, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
     width: 100,
     height: 100,
     margin: 10,
+    borderRadius: 10,
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    shadowOffset: { width: 10, height: 10 },
+    shadowColor: "black",
+    shadowOpacity: 1,
+    elevation: 5,
+    backgroundColor: "white",
+  },
+  pokemon: {
+    backgroundColor: "lightgrey",
+    height: 50,
+    textAlign: "center",
+    textAlignVertical: "bottom",
+    borderRadius: 10,
   },
 });
