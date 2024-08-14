@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import useGet from "../../hooks/useGet";
 
-
 export default function DetailsScreen() {
   const { id } = useLocalSearchParams();
   const { data, error, loading } = useGet(
@@ -21,6 +20,9 @@ export default function DetailsScreen() {
   // if(data && data) {
   //   item.type.name = TYPES
   // }
+
+  const SPRITES =
+    data && data?.sprites?.other["official-artwork"].front_default;
 
   return (
     <View style={styles.container}>
@@ -34,7 +36,7 @@ export default function DetailsScreen() {
           <View style={styles.header}>
             <Link
               href={{
-                pathname: "./index",
+                pathname: "#",
               }}
             >
               Back
@@ -44,11 +46,19 @@ export default function DetailsScreen() {
           </View>
 
           {/* Pokemon img */}
-          {/* <Image style={styles.imgContainer} source={{ uri: `${data && data?.sprites.front_default}`}} /> */}
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Image style={styles.imgContainer} source={{ uri: `${SPRITES}` }} />
+          </View>
 
           {/* info container */}
           <View style={styles.innerContainer}>
-
             {/* Types */}
             <FlatList
               contentContainerStyle={styles.typesContainer}
@@ -61,21 +71,54 @@ export default function DetailsScreen() {
             />
 
             {/* About */}
-            <View style={{flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 5,}}>
-              <Text>{data.weight} kg</Text>
-              <Text>{data.height} m</Text>
-              <View style={{alignItems: "center", flexDirection: "row", width: 150,}}>
-              <FlatList
-                contentContainerStyle={{flexDirection: "row", alignItems: "center", gap: 5,}}
-                data={data.abilities}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => <Text>{item.ability.name}</Text>}
-              />
+            <View>
+              <Text style={{ textAlign: "center", fontSize: 20, paddingBottom: 20,}}>About</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: 20,
+                  // backgroundColor: "blue",
+                }}
+              >
+                <View style={{flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20,}}>
+                <Text>{data.weight} kg</Text>
+                <Text>Weight</Text>
+                </View>
+
+                <View style={{flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20,}}>
+                <Text>{data.height} m</Text>
+                <Text>Height</Text>
+                </View>
+
+                <View
+                  style={{
+                    alignItems: "center",
+                    flexDirection: "column",
+                    // backgroundColor: "green",
+                    width: 70,
+                    height: "100%",
+                  }}
+                >
+                  <FlatList
+                    contentContainerStyle={{
+                      alignItems: "center",
+                      gap: 5,
+                      width: "100%",
+                      backgroundColor:"white",
+                    }}
+                    data={data.abilities}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => <Text>{item.ability.name}</Text>}
+                  />
+                  <Text>Moves</Text>
+                </View>
               </View>
             </View>
 
             {/* description */}
-            <Text style={{paddingHorizontal: 20, paddingVertical: 5,}}>
+            <Text style={{ paddingHorizontal: 20, paddingVertical: 5 }}>
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellat
               ea tenetur libero alias nostrum harum nisi voluptate veniam ipsam
               natus beatae nobis deleniti sint, mollitia, debitis porro
@@ -83,13 +126,13 @@ export default function DetailsScreen() {
             </Text>
 
             {/* Base stats */}
+            <Text style={{ textAlign: "center", fontSize: 20, paddingBottom: 20,}}>Base Stats</Text>
             <FlatList
               data={data.stats}
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
                 <Text>
                   {item.stat.name} {item.base_stat}
-                  
                 </Text>
               )}
             />
@@ -105,28 +148,36 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 5,
     backgroundColor: "lightgreen",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "full",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
+    padding: 20,
+  },
+  imgContainer: {
+    width: 250,
+    height: 250,
+    resizeMode: "contain",
+    position: "absolute",
+    zIndex: 1,
   },
   innerContainer: {
-    height: 400,
+    height: "65%",
     flexDirection: "column",
     backgroundColor: "white",
     padding: 20,
+    gap: 5,
     borderRadius: 5,
-  },
-  imgContainer: {
-    width: 100,
-    height: 100,
-    resizeMode: "center",
   },
   typesContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 'auto',
+    justifyContent: "center",
+    alignItems: "center",
+    width: "auto",
   },
   types: {
     textAlignVertical: "center",
